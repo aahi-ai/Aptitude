@@ -1,11 +1,15 @@
+# Environment variables (API keys — never commit these)
 .env.local
 .env
 
+# Vercel
 .vercel
 
+# OS/editor junk
 .DS_Store
 Thumbs.db
 .vscode/*
 !.vscode/settings.json
 
+# Node (in case Vercel or anything generates this later)
 node_modules/
