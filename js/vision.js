@@ -1,12 +1,5 @@
-// vision.js — camera access and video feed control
-// Pose detection gets added here later. For now: just get the camera on screen.
-
 let cameraStream = null;
 
-/**
- * Requests camera access and starts streaming into the <video> element.
- * Returns true if it succeeded, false if it failed (permission denied, no camera, etc).
- */
 async function startCamera() {
   const videoEl = document.getElementById("camera-feed");
   const placeholderEl = document.getElementById("video-placeholder");
@@ -36,9 +29,7 @@ async function startCamera() {
   }
 }
 
-/**
- * Stops the camera stream and resets the video panel back to its placeholder state.
- */
+
 function stopCamera() {
   const videoEl = document.getElementById("camera-feed");
   const placeholderEl = document.getElementById("video-placeholder");
