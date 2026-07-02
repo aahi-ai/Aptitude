@@ -1,80 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aptitude — Session</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/coach.css">
-</head>
-<body>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Aptitude</title>
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="css/main.css">
+                <link rel="stylesheet" href="css/coach.css">
+                </head>
+                <body>
 
-  <nav class="nav">
-    <a href="index.html" class="nav__logo">apt<span>i</span>tude</a>
-    <div class="nav__links">
-      <span class="nav__how" id="session-timer">0:00</span>
-    </div>
-  </nav>
+                <nav class="nav">
+                    <a href="index.html" class="nav__logo">apt<span>i</span>tude</a>
+                    <div class="nav__links">
+                    <span class="nav__how" id="session-timer">0:00</span>
+                    </div>
+                </nav>
 
-  <main class="session">
-    <div class="session__meta">
-      <span id="question-counter">Question 1 of 5</span>
-      <span id="question-type">Behavioral</span>
-    </div>
+                <main class="session">
+                    <div class="session__meta">
+                    <span id="question-counter">Question 1 of 5</span>
+                    <span id="question-type">Behavioral</span>
+                    </div>
 
-    <h1 class="session__question" id="question-text">
-      Press start when you're ready. Your first question will appear here.
-    </h1>
+                    <h1 class="session__question" id="question-text">
+                    Press start when you're ready. Your first question will appear here.
+                    </h1>
 
-    <div class="session__grid">
-      <div class="video-panel" id="video-panel">
-        <span class="video-panel__badge">
-          <span class="video-panel__badge-dot" id="live-dot"></span>
-          <span id="live-label">not started</span>
-        </span>
-        <video id="camera-feed" autoplay muted playsinline hidden></video>
-        <p class="video-panel__placeholder" id="video-placeholder">
-          Camera preview will appear here once you start.
-        </p>
-      </div>
+                    <div class="session__grid">
+                    <div class="video-panel" id="video-panel">
+                        <span class="video-panel__badge">
+                        <span class="video-panel__badge-dot" id="live-dot"></span>
+                        <span id="live-label">not started</span>
+                        </span>
+                        <video id="camera-feed" autoplay muted playsinline hidden></video>
+                        <p class="video-panel__placeholder" id="video-placeholder">
+                        Camera preview will appear here once you start.
+                        </p>
+                    </div>
 
-      <div class="live-transcript">
-        <p class="live-transcript__label">LIVE TRANSCRIPT</p>
-        <div class="live-transcript__body" id="transcript-body">
-          <span class="live-transcript__placeholder">Your words will appear here as you speak.</span>
-        </div>
+                    <div class="live-transcript">
+                        <p class="live-transcript__label">LIVE TRANSCRIPT</p>
+                        <div class="live-transcript__body" id="transcript-body">
+                        <span class="live-transcript__placeholder">Your words will appear here as you speak.</span>
+                        </div>
 
-        <div class="readouts">
-          <div class="readout">
-            <p class="readout__label">PACE</p>
-            <p class="readout__value" id="pace-value">—</p>
-          </div>
-          <div class="readout">
-            <p class="readout__label">POSTURE</p>
-            <p class="readout__value" id="posture-value">—</p>
-          </div>
-          <div class="readout">
-            <p class="readout__label">FILLERS</p>
-            <p class="readout__value" id="filler-value">—</p>
-          </div>
-        </div>
-      </div>
-    </div>
+                        <div class="readouts">
+                        <div class="readout">
+                            <p class="readout__label">PACE</p>
+                            <p class="readout__value" id="pace-value">—</p>
+                        </div>
+                        <div class="readout">
+                            <p class="readout__label">POSTURE</p>
+                            <p class="readout__value" id="posture-value">—</p>
+                        </div>
+                        <div class="readout">
+                            <p class="readout__label">FILLERS</p>
+                            <p class="readout__value" id="filler-value">—</p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
 
-    <div class="controls">
-      <button class="btn btn--primary" id="start-stop-btn">Start interview</button>
-      <span class="controls__status" id="status-text">Ready when you are.</span>
-    </div>
-  </main>
+                    <div class="controls">
+                    <button class="btn btn--primary" id="start-stop-btn">Start interview</button>
+                    <span class="controls__status" id="status-text">Ready when you are.</span>
+                    </div>
+                </main>
 
-  <script src="js/vision.js"></script>
-  <script src="js/voice.js"></script>
-  <script src="js/interview.js"></script>
-  <script src="js/scoring.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/store.js"></script>
-  <script src="js/coach.js"></script>
-</body>
-</html>
+                <script src="js/vision.js"></script>
+                <script src="js/voice.js"></script>
+                <script src="js/interview.js"></script>
+                <script src="js/scoring.js"></script>
+                <script src="js/api.js"></script>
+                <script src="js/store.js"></script>
+                <script src="js/coach.js"></script>
+                </body>
+                </html>

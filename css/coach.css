@@ -1,0 +1,171 @@
+/* ===========================
+   Coach screen layout
+   =========================== */
+.session {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+}
+
+.session__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+
+.session__question {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  max-width: 680px;
+}
+
+.session__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+}
+
+/* ---- Video panel ---- */
+.video-panel {
+  background: var(--ink);
+  border-radius: var(--radius);
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-panel video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-panel__placeholder {
+  color: var(--paper);
+  opacity: 0.4;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.video-panel__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(237, 234, 226, 0.1);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.video-panel__badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+}
+
+.video-panel__badge-dot--live {
+  background: var(--pen);
+}
+
+/* ---- Transcript panel ---- */
+.live-transcript {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.live-transcript__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.live-transcript__body {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.live-transcript__placeholder {
+  color: var(--ink-soft);
+}
+
+/* ---- Live readouts (posture / pace, filled in later) ---- */
+.readouts {
+  display: flex;
+  gap: 18px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+.readout {
+  flex: 1;
+}
+
+.readout__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+
+.readout__value {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ---- Controls ---- */
+.controls {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.controls__status {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 760px) {
+  .session {
+    padding: 24px 24px 60px;
+  }
+  .session__grid {
+    grid-template-columns: 1fr;
+  }
+  .live-transcript {
+    min-height: 200px;
+  }
+}
