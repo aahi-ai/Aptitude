@@ -1,4 +1,4 @@
-    let sessionActive = false;
+let sessionActive = false;
 
 const startStopBtn = document.getElementById("start-stop-btn");
 const statusText = document.getElementById("status-text");
@@ -15,7 +15,7 @@ startStopBtn.addEventListener("click", async () => {
     } else {
       statusText.textContent = "Camera access denied or unavailable.";
     }
-  } else {
+  } else {  
     stopCamera();
     sessionActive = false;
     startStopBtn.textContent = "Start interview";
