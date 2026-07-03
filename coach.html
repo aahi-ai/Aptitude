@@ -8,6 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/coach.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -35,6 +37,8 @@
           <span id="live-label">not started</span>
         </span>
         <video id="camera-feed" autoplay muted playsinline hidden></video>
+        <video id="camera-feed" autoplay muted playsinline hidden></video>
+        <canvas id="pose-canvas" hidden></canvas>
         <p class="video-panel__placeholder" id="video-placeholder">
           Camera preview will appear here once you start.
         </p>

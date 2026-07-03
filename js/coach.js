@@ -1,8 +1,4 @@
-// coach.js — main session controller
-// For now: just wires the Start/Stop button to the camera.
-// Question flow, transcript, and scoring get plugged in here as they're built.
-
-let sessionActive = false;
+    let sessionActive = false;
 
 const startStopBtn = document.getElementById("start-stop-btn");
 const statusText = document.getElementById("status-text");
