@@ -350,3 +350,12 @@ a {
     align-items: flex-start;
   }
 }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--paper-raised);
+}
