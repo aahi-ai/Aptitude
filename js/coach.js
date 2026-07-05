@@ -7,6 +7,7 @@ let sessionActive = false;
 const startStopBtn = document.getElementById("start-stop-btn");
 const nextQuestionBtn = document.getElementById("next-question-btn");
 const statusText = document.getElementById("status-text");
+const restartBtn = document.getElementById("restart-btn");
 
 startStopBtn.addEventListener("click", async () => {
   if (!sessionActive) {
@@ -52,13 +53,36 @@ nextQuestionBtn.addEventListener("click", () => {
 });
 
 /**
- * Hides the active session UI and shows the "session complete" screen
- * with a link to the report page.
+ * Hides the active session UI and shows the "session complete" screen.
+ * Uses the .force-hidden class (not the hidden attribute) because
+ * .session__grid/.session__meta/.controls all set an explicit display
+ * property, which overrides the browser's default [hidden] styling.
  */
 function showCompletionScreen() {
-  document.querySelector(".session__meta").hidden = true;
-  document.getElementById("question-text").hidden = true;
-  document.querySelector(".session__grid").hidden = true;
-  document.querySelector(".controls").hidden = true;
+  document.querySelector(".session__meta").classList.add("force-hidden");
+  document.getElementById("question-text").classList.add("force-hidden");
+  document.querySelector(".session__grid").classList.add("force-hidden");
+  document.querySelector(".controls").classList.add("force-hidden");
   document.getElementById("completion-screen").hidden = false;
 }
+
+/**
+ * Reverses showCompletionScreen() and resets the question flow and transcript.
+ */
+function hideCompletionScreen() {
+  document.querySelector(".session__meta").classList.remove("force-hidden");
+  document.getElementById("question-text").classList.remove("force-hidden");
+  document.querySelector(".session__grid").classList.remove("force-hidden");
+  document.querySelector(".controls").classList.remove("force-hidden");
+  document.getElementById("completion-screen").hidden = true;
+}
+
+restartBtn.addEventListener("click", () => {
+  resetInterviewQuestions();
+  clearTranscriptDisplay();
+  hideCompletionScreen();
+
+  startStopBtn.textContent = "Start interview";
+  nextQuestionBtn.hidden = true;
+  statusText.textContent = "Ready when you are.";
+});

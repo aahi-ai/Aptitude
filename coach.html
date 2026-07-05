@@ -23,7 +23,7 @@
   <main class="session">
     <div class="session__meta">
       <span id="question-counter">Question 1 of 5</span>
-      <span id="question-type">Behavioral</span>    
+      <span id="question-type">Behavioral</span>
     </div>
 
     <h1 class="session__question" id="question-text">
@@ -36,7 +36,6 @@
           <span class="video-panel__badge-dot" id="live-dot"></span>
           <span id="live-label">not started</span>
         </span>
-        <video id="camera-feed" autoplay muted playsinline hidden></video>
         <video id="camera-feed" autoplay muted playsinline hidden></video>
         <canvas id="pose-canvas" hidden></canvas>
         <p class="video-panel__placeholder" id="video-placeholder">
@@ -74,13 +73,16 @@
     </div>
 
     <div class="completion" id="completion-screen" hidden>
-        <p class="completion__eyebrow">SESSION COMPLETE</p>
-        <h2 class="completion__title">Nice work — that's the full interview.</h2>
-        <p class="completion__subtitle">
+      <p class="completion__eyebrow">SESSION COMPLETE</p>
+      <h2 class="completion__title">Nice work — that's the full interview.</h2>
+      <p class="completion__subtitle">
         Your posture, pace, and answers were tracked throughout the session.
         Check your report for the full breakdown.
-        </p>
+      </p>
+      <div class="completion__actions">
         <a href="report.html" class="btn btn--primary">View score report</a>
+        <button class="btn btn--ghost" id="restart-btn">Restart interview</button>
+      </div>
     </div>
   </main>
 
