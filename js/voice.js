@@ -4,8 +4,9 @@
 let recognizer = null;
 let listening = false;
 
-// Every finalized chunk of speech gets logged here with a timestamp,
-// so later modules (pace, filler detection, scoring) can work off real data.
+// Every finalized chunk of speech gets logged here with a timestamp and the
+// question it was said during, so later modules (pace, filler detection,
+// scoring) can work off real, per-question data.
 let transcriptLog = [];
 
 /**
@@ -60,7 +61,8 @@ function stopListening() {
 
 /**
  * Handles both interim (still-being-spoken) and final (confirmed) results.
- * Final chunks get logged with a timestamp; interim text is shown but not saved.
+ * Final chunks get logged with a timestamp and the current question index;
+ * interim text is shown but not saved.
  */
 function handleRecognitionResult(event) {
   let interimText = "";
@@ -72,7 +74,8 @@ function handleRecognitionResult(event) {
     if (result.isFinal) {
       transcriptLog.push({
         text: text.trim(),
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        questionIndex: currentQuestionIndex
       });
     } else {
       interimText += text;
@@ -83,28 +86,71 @@ function handleRecognitionResult(event) {
 }
 
 /**
- * Renders the full finalized transcript plus whatever's currently being spoken
- * (shown lighter/greyed until it's finalized).
+ * Renders one transcript box per question, grouping finalized entries by
+ * questionIndex. Whatever's currently being spoken (not yet finalized) is
+ * appended, faded, to the box for the active question.
  */
 function renderTranscript(interimText) {
-  const body = document.getElementById("transcript-body");
+  const container = document.getElementById("transcript-body");
+  container.innerHTML = "";
 
-  const finalText = transcriptLog.map((entry) => entry.text).join(" ");
+  const groups = {};
+  transcriptLog.forEach((entry) => {
+    if (!groups[entry.questionIndex]) groups[entry.questionIndex] = [];
+    groups[entry.questionIndex].push(entry.text);
+  });
 
-  body.innerHTML = "";
+  const questionIndices = Object.keys(groups)
+    .map(Number)
+    .sort((a, b) => a - b);
 
-  const finalSpan = document.createElement("span");
-  finalSpan.textContent = finalText;
-  body.appendChild(finalSpan);
+  const hasCurrentGroup = questionIndices.includes(currentQuestionIndex);
+
+  if (questionIndices.length === 0 && !interimText) {
+    clearTranscriptDisplay();
+    return;
+  }
+
+  questionIndices.forEach((qIndex) => {
+    container.appendChild(
+      buildTranscriptGroup(qIndex, groups[qIndex].join(" "), qIndex === currentQuestionIndex ? interimText : "")
+    );
+  });
+
+  // If the current question has no finalized text yet, but there's interim
+  // text being spoken, still show a box for it.
+  if (!hasCurrentGroup && interimText) {
+    container.appendChild(buildTranscriptGroup(currentQuestionIndex, "", interimText));
+  }
+
+  container.scrollTop = container.scrollHeight;
+}
+
+/**
+ * Builds one labeled transcript box for a single question.
+ */
+function buildTranscriptGroup(questionIndex, finalText, interimText) {
+  const group = document.createElement("div");
+  group.className = "transcript-group";
+
+  const label = document.createElement("p");
+  label.className = "transcript-group__label";
+  label.textContent = `Q${questionIndex + 1}`;
+  group.appendChild(label);
+
+  const textEl = document.createElement("p");
+  textEl.className = "transcript-group__text";
+  textEl.textContent = finalText;
 
   if (interimText) {
     const interimSpan = document.createElement("span");
-    interimSpan.style.opacity = "0.5";
-    interimSpan.textContent = " " + interimText;
-    body.appendChild(interimSpan);
+    interimSpan.className = "transcript-group__interim";
+    interimSpan.textContent = (finalText ? " " : "") + interimText;
+    textEl.appendChild(interimSpan);
   }
 
-  body.scrollTop = body.scrollHeight;
+  group.appendChild(textEl);
+  return group;
 }
 
 /**
