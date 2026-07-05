@@ -71,7 +71,7 @@ function renderInterviewComplete() {
     "That's the last question. Nice work — stop the interview to see your report.";
   document.getElementById("question-type").textContent = "Done";
 }
-
+    
 /**
  * Resets the question flow back to its initial, pre-session state.
  */
