@@ -49,6 +49,35 @@ function resetProsodyTimers() {
 }
 
 /**
+ * Returns the finalized (not interim) pace and filler count for a specific
+ * question, using only what's actually in transcriptLog. Used by session.js
+ * when a question ends, to record a real, stable number rather than
+ * whatever was on screen mid-sentence.
+ */
+function getFinalMetricsForQuestion(questionIndex) {
+  const entries = transcriptLog.filter((entry) => entry.questionIndex === questionIndex);
+  const text = entries.map((e) => e.text).join(" ");
+
+  const startTime = questionStartTimestamps[questionIndex];
+  const endTime = entries.length > 0 ? entries[entries.length - 1].timestamp : null;
+
+  let wpm = null;
+  if (startTime && endTime && entries.length > 0) {
+    const elapsedMinutes = (endTime - startTime) / 1000 / 60;
+    const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+    if (elapsedMinutes >= 0.05) {
+      wpm = Math.round(wordCount / elapsedMinutes);
+    }
+  }
+
+  return {
+    transcript: text,
+    wpm,
+    fillerCount: countFillers(text)
+  };
+}
+
+/**
  * Recomputes and displays PACE and FILLERS for the currently active question.
  * Uses both finalized transcript text and whatever's currently being spoken
  * (interimText), so the pace reading updates continuously rather than only
