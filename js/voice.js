@@ -147,7 +147,7 @@ function buildTranscriptGroup(questionIndex, finalText, interimText) {
 
   if (interimText) {
     const interimSpan = document.createElement("span");
-    interimSpan.className = "transcript-group__interim";
+    interimSpan.clascsName = "transcript-group__interim";
     interimSpan.textContent = (finalText ? " " : "") + interimText;
     textEl.appendChild(interimSpan);
   }

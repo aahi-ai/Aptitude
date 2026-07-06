@@ -3,6 +3,7 @@
 let cameraStream = null;
 let poseDetector = null;
 let poseLoopRunning = false;
+let postureSamples = []; // { questionIndex, angle } — used later for per-question averages
 
 const videoEl = () => document.getElementById("camera-feed");
 const canvasEl = () => document.getElementById("pose-canvas");
@@ -22,6 +23,8 @@ async function startCamera() {
       video: { facingMode: "user" },
       audio: false // audio is handled separately in voice.js
     });
+
+    postureSamples = [];
 
     video.srcObject = cameraStream;
     video.hidden = false;
@@ -183,4 +186,6 @@ function updatePostureReading(landmarks) {
   const rounded = Math.round(angleDegrees);
   const label = rounded === 0 ? "0° (level)" : `${rounded > 0 ? "+" : ""}${rounded}°`;
   postureValueEl.textContent = label;
+
+  postureSamples.push({ questionIndex: currentQuestionIndex, angle: angleDegrees });
 }

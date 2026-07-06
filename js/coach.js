@@ -1,88 +1,88 @@
-// coach.js — main session controller
-// Wires the Start/Stop button and Next Question button to the camera,
-// speech recognition, and question flow. Scoring/report generation come later.
+  // coach.js — main session controller
+  // Wires the Start/Stop button and Next Question button to the camera,
+  // speech recognition, and question flow. Scoring/report generation come later.
 
-let sessionActive = false;
+  let sessionActive = false;
 
-const startStopBtn = document.getElementById("start-stop-btn");
-const nextQuestionBtn = document.getElementById("next-question-btn");
-const statusText = document.getElementById("status-text");
-const restartBtn = document.getElementById("restart-btn");
+  const startStopBtn = document.getElementById("start-stop-btn");
+  const nextQuestionBtn = document.getElementById("next-question-btn");
+  const statusText = document.getElementById("status-text");
+  const restartBtn = document.getElementById("restart-btn");
 
-startStopBtn.addEventListener("click", async () => {
-  if (!sessionActive) {
-    statusText.textContent = "Requesting camera access...";
-    const cameraOk = await startCamera();
+  startStopBtn.addEventListener("click", async () => {
+    if (!sessionActive) {
+      statusText.textContent = "Requesting camera access...";
+      const cameraOk = await startCamera();
 
-    if (cameraOk) {
-      const micOk = startListening();
-      if (!micOk) {
-        statusText.textContent = "Speech recognition isn't supported in this browser.";
+      if (cameraOk) {
+        const micOk = startListening();
+        if (!micOk) {
+          statusText.textContent = "Speech recognition isn't supported in this browser.";
+        }
+
+        startInterviewQuestions();
+
+        sessionActive = true;
+        startStopBtn.textContent = "Stop interview";
+        nextQuestionBtn.hidden = false;
+        statusText.textContent = "Session in progress.";
+      } else {
+        statusText.textContent = "Camera access denied or unavailable.";
       }
-
-      startInterviewQuestions();
-
-      sessionActive = true;
-      startStopBtn.textContent = "Stop interview";
-      nextQuestionBtn.hidden = false;
-      statusText.textContent = "Session in progress.";
     } else {
-      statusText.textContent = "Camera access denied or unavailable.";
-    }
-  } else {
-    stopCamera();
-    stopListening();
-    resetInterviewQuestions();
+      stopCamera();
+      stopListening();
+      resetInterviewQuestions();
 
-    sessionActive = false;
+      sessionActive = false;
+      startStopBtn.textContent = "Start interview";
+      nextQuestionBtn.hidden = true;
+      statusText.textContent = "Session ended.";
+    }
+  });
+
+  nextQuestionBtn.addEventListener("click", () => {
+    const hasMoreQuestions = goToNextQuestion();
+
+    if (!hasMoreQuestions) {
+      stopCamera();
+      stopListening();
+      sessionActive = false;
+      showCompletionScreen();
+    }
+  });
+
+  /**
+   * Hides the active session UI and shows the "session complete" screen.
+   * Uses the .force-hidden class (not the hidden attribute) because
+   * .session__grid/.session__meta/.controls all set an explicit display
+   * property, which overrides the browser's default [hidden] styling.
+   */
+  function showCompletionScreen() {
+    document.querySelector(".session__meta").classList.add("force-hidden");
+    document.getElementById("question-text").classList.add("force-hidden");
+    document.querySelector(".session__grid").classList.add("force-hidden");
+    document.querySelector(".controls").classList.add("force-hidden");
+    document.getElementById("completion-screen").hidden = false;
+  }
+
+  /**
+   * Reverses showCompletionScreen() and resets the question flow and transcript.
+   */
+  function hideCompletionScreen() {
+    document.querySelector(".session__meta").classList.remove("force-hidden");
+    document.getElementById("question-text").classList.remove("force-hidden");
+    document.querySelector(".session__grid").classList.remove("force-hidden");
+    document.querySelector(".controls").classList.remove("force-hidden");
+    document.getElementById("completion-screen").hidden = true;
+  }
+
+  restartBtn.addEventListener("click", () => {
+    resetInterviewQuestions();
+    clearTranscriptDisplay();
+    hideCompletionScreen();
+
     startStopBtn.textContent = "Start interview";
     nextQuestionBtn.hidden = true;
-    statusText.textContent = "Session ended.";
-  }
-});
-
-nextQuestionBtn.addEventListener("click", () => {
-  const hasMoreQuestions = goToNextQuestion();
-
-  if (!hasMoreQuestions) {
-    stopCamera();
-    stopListening();
-    sessionActive = false;
-    showCompletionScreen();
-  }
-});
-
-/**
- * Hides the active session UI and shows the "session complete" screen.
- * Uses the .force-hidden class (not the hidden attribute) because
- * .session__grid/.session__meta/.controls all set an explicit display
- * property, which overrides the browser's default [hidden] styling.
- */
-function showCompletionScreen() {
-  document.querySelector(".session__meta").classList.add("force-hidden");
-  document.getElementById("question-text").classList.add("force-hidden");
-  document.querySelector(".session__grid").classList.add("force-hidden");
-  document.querySelector(".controls").classList.add("force-hidden");
-  document.getElementById("completion-screen").hidden = false;
-}
-
-/**
- * Reverses showCompletionScreen() and resets the question flow and transcript.
- */
-function hideCompletionScreen() {
-  document.querySelector(".session__meta").classList.remove("force-hidden");
-  document.getElementById("question-text").classList.remove("force-hidden");
-  document.querySelector(".session__grid").classList.remove("force-hidden");
-  document.querySelector(".controls").classList.remove("force-hidden");
-  document.getElementById("completion-screen").hidden = true;
-}
-
-restartBtn.addEventListener("click", () => {
-  resetInterviewQuestions();
-  clearTranscriptDisplay();
-  hideCompletionScreen();
-
-  startStopBtn.textContent = "Start interview";
-  nextQuestionBtn.hidden = true;
-  statusText.textContent = "Ready when you are.";
-});
+    statusText.textContent = "Ready when you are.";
+  });
