@@ -1,5 +1,6 @@
 // voice.js — live speech-to-text using the Web Speech API
-// Pace/pause/filler-word math (prosody) gets built on top of transcriptLog later.
+// Pace/pause/filler-word math (prosody) lives in prosody.js, built on top
+// of transcriptLog.
 
 let recognizer = null;
 let listening = false;
@@ -23,6 +24,7 @@ function startListening() {
 
   transcriptLog = [];
   clearTranscriptDisplay();
+  resetProsodyTimers();
 
   recognizer = new SpeechRecognition();
   recognizer.continuous = true;
@@ -83,6 +85,7 @@ function handleRecognitionResult(event) {
   }
 
   renderTranscript(interimText);
+  updateLiveMetrics(interimText);
 }
 
 /**

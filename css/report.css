@@ -1,177 +1,177 @@
-/* ===========================
-   Report screen layout
-   =========================== */
-.report {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 48px 48px 100px;
-}
+    /* ===========================
+    Report screen layout
+    =========================== */
+    .report {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 48px 100px;
+    }
 
-.report__eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--ink-soft);
-  letter-spacing: 0.04em;
-  margin-bottom: 12px;
-}
+    .report__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+    }
 
-.report__title {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 40px;
-}
+    .report__title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    }
 
-/* ---- Overall score band ---- */
-.score-band {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 48px;
-}
+    /* ---- Overall score band ---- */
+    .score-band {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+    }
 
-.score-stat {
-  background: var(--paper-raised);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 22px 24px;
-}
+    .score-stat {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    }
 
-.score-stat__label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-soft);
-  margin-bottom: 10px;
-}
+    .score-stat__label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    }
 
-.score-stat__value {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 600;
-}
+    .score-stat__value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    }
 
-.score-stat__value--pen {
-  color: var(--pen);
-}
+    .score-stat__value--pen {
+    color: var(--pen);
+    }
 
-.score-stat__value--mark {
-  color: var(--mark);
-}
+    .score-stat__value--mark {
+    color: var(--mark);
+    }
 
-.score-stat__note {
-  font-size: 0.82rem;
-  color: var(--ink-soft);
-  margin-top: 4px;
-}
+    .score-stat__note {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    }
 
-/* ---- Per-question breakdown ---- */
-.breakdown {
-  margin-bottom: 48px;
-}
+    /* ---- Per-question breakdown ---- */
+    .breakdown {
+    margin-bottom: 48px;
+    }
 
-.breakdown__title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-}
+    .breakdown__title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    }
 
-.question-report {
-  background: var(--paper-raised);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 22px 26px;
-  margin-bottom: 16px;
-}
+    .question-report {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    }
 
-.question-report__meta {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-  margin-bottom: 10px;
-}
+    .question-report__meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    }
 
-.question-report__prompt {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  margin-bottom: 14px;
-}
+    .question-report__prompt {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+    }
 
-.question-report__transcript {
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  line-height: 1.8;
-  color: var(--ink);
-  margin-bottom: 14px;
-}
+    .question-report__transcript {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: var(--ink);
+    margin-bottom: 14px;
+    }
 
-.question-report__stats {
-  display: flex;
-  gap: 24px;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--ink-soft);
-}
+    .question-report__stats {
+    display: flex;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    }
 
-.question-report__stats span strong {
-  color: var(--ink);
-  font-weight: 600;
-}
+    .question-report__stats span strong {
+    color: var(--ink);
+    font-weight: 600;
+    }
 
-/* ---- Tips ---- */
-.tips {
-  margin-bottom: 40px;
-}
+    /* ---- Tips ---- */
+    .tips {
+    margin-bottom: 40px;
+    }
 
-.tips__title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-}
+    .tips__title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    }
 
-.tips__item {
-  display: flex;
-  gap: 14px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-}
+    .tips__item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    }
 
-.tips__item:last-child {
-  border-bottom: none;
-}
+    .tips__item:last-child {
+    border-bottom: none;
+    }
 
-.tips__marker {
-  color: var(--pen);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
+    .tips__marker {
+    color: var(--pen);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    }
 
-.tips__text {
-  font-size: 0.92rem;
-  color: var(--ink);
-}
+    .tips__text {
+    font-size: 0.92rem;
+    color: var(--ink);
+    }
 
-/* ---- Footer actions ---- */
-.report__actions {
-  display: flex;
-  gap: 12px;
-}
-
-/* ===========================
-   Responsive
-   =========================== */
-@media (max-width: 720px) {
-  .report {
-    padding: 32px 24px 80px;
-  }
-  .score-band {
-    grid-template-columns: 1fr;
-  }
-  .question-report__stats {
-    flex-wrap: wrap;
+    /* ---- Footer actions ---- */
+    .report__actions {
+    display: flex;
     gap: 12px;
-  }
-}
+    }
+
+    /* ===========================
+    Responsive
+    =========================== */
+    @media (max-width: 720px) {
+    .report {
+        padding: 32px 24px 80px;
+    }
+    .score-band {
+        grid-template-columns: 1fr;
+    }
+    .question-report__stats {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    }
