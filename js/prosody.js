@@ -1,9 +1,3 @@
-// prosody.js — turns raw transcript entries into real pace (WPM) and
-// filler word metrics. Reads from transcriptLog and currentQuestionIndex,
-// both declared globally in voice.js / interview.js.
-
-// Common filler words/phrases. Matched as whole words (case-insensitive) so
-// "like" only counts on its own, not inside "likely" or "liked".
 const FILLER_PATTERNS = [
   /\bum+\b/gi,
   /\buh+\b/gi,
@@ -16,18 +10,8 @@ const FILLER_PATTERNS = [
   /\bbasically\b/gi
 ];
 
-// Tracks when speech first started for each question, so WPM can be computed
-// continuously (using interim + final text) instead of waiting for two
-// separate finalized chunks, which may never happen if someone talks without
-// pausing.
 let questionStartTimestamps = {};
 
-/**
- * Counts filler word occurrences in a block of text.
- * Note: "like" is a genuinely common word too, so this is an approximation,
- * not a perfect filler detector — good enough to flag patterns, not a legal
- * transcript audit.
- */
 function countFillers(text) {
   if (!text) return 0;
 
@@ -40,20 +24,10 @@ function countFillers(text) {
   return count;
 }
 
-/**
- * Clears all recorded question start times. Call this whenever a session
- * starts or restarts, so old timing data doesn't leak into a new attempt.
- */
 function resetProsodyTimers() {
   questionStartTimestamps = {};
 }
 
-/**
- * Returns the finalized (not interim) pace and filler count for a specific
- * question, using only what's actually in transcriptLog. Used by session.js
- * when a question ends, to record a real, stable number rather than
- * whatever was on screen mid-sentence.
- */
 function getFinalMetricsForQuestion(questionIndex) {
   const entries = transcriptLog.filter((entry) => entry.questionIndex === questionIndex);
   const text = entries.map((e) => e.text).join(" ");
@@ -77,12 +51,6 @@ function getFinalMetricsForQuestion(questionIndex) {
   };
 }
 
-/**
- * Recomputes and displays PACE and FILLERS for the currently active question.
- * Uses both finalized transcript text and whatever's currently being spoken
- * (interimText), so the pace reading updates continuously rather than only
- * after a pause triggers a finalized chunk.
- */
 function updateLiveMetrics(interimText) {
   const paceValueEl = document.getElementById("pace-value");
   const fillerValueEl = document.getElementById("filler-value");
@@ -102,7 +70,6 @@ function updateLiveMetrics(interimText) {
 
   let wpm = null;
   if (combinedText && elapsedMinutes >= 0.05) {
-    // at least ~3 seconds of data
     const wordCount = combinedText.split(/\s+/).filter(Boolean).length;
     wpm = Math.round(wordCount / elapsedMinutes);
   }

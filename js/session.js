@@ -1,21 +1,9 @@
-// session.js — records what actually happened on each question (posture,
-// pace, fillers, transcript) so the report page can show real data instead
-// of placeholders.
-
 let sessionLog = [];
 
-/**
- * Resets the session log. Call this whenever a new interview starts.
- */
 function resetSessionLog() {
   sessionLog = [];
 }
 
-/**
- * Captures the final result for one question — pulling real posture samples
- * from vision.js and real pace/filler numbers from prosody.js — and appends
- * it to sessionLog. Called right before advancing to the next question.
- */
 function recordQuestionResult(questionIndex) {
   const question = questionBank[questionIndex];
   const metrics = getFinalMetricsForQuestion(questionIndex);
@@ -40,10 +28,6 @@ function recordQuestionResult(questionIndex) {
   });
 }
 
-/**
- * Computes session-wide averages across every recorded question, skipping
- * any question that didn't produce a usable number (e.g. no speech detected).
- */
 function computeSessionAggregates() {
   const wpmValues = sessionLog.map((q) => q.wpm).filter((v) => v !== null);
   const postureValues = sessionLog.map((q) => q.avgPosture).filter((v) => v !== null);

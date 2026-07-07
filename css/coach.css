@@ -1,6 +1,3 @@
-/* ===========================
-   Coach screen layout
-   =========================== */
 .session {
   max-width: 1000px;
   margin: 0 auto;
@@ -31,7 +28,6 @@
   gap: 24px;
 }
 
-/* ---- Video panel ---- */
 .video-panel {
   background: var(--ink);
   border-radius: var(--radius);
@@ -131,7 +127,6 @@
   color: var(--ink-soft);
 }
 
-/* ---- Live readouts (posture / pace, filled in later) ---- */
 .readouts {
   display: flex;
   gap: 18px;
@@ -157,7 +152,6 @@
   font-weight: 500;
 }
 
-/* ---- Controls ---- */
 .controls {
   margin-top: 28px;
   display: flex;
@@ -171,9 +165,6 @@
   color: var(--ink-soft);
 }
 
-/* ===========================
-   Responsive
-   =========================== */
 @media (max-width: 760px) {
   .session {
     padding: 24px 24px 60px;
@@ -186,7 +177,6 @@
   }
 }
 
-/* ---- Completion screen ---- */
 .completion {
   text-align: center;
   padding: 80px 20px;
@@ -244,8 +234,6 @@
   justify-content: center;
 }
 
-/* Utility: hidden attribute alone doesn't override elements with an
-   explicit display property (grid/flex), so this forces it. */
 .force-hidden {
   display: none !important;
 }
