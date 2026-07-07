@@ -1,15 +1,28 @@
 // coach.js — main session controller
-// Wires the Start/Stop button and Next Question button to the camera,
-// speech recognition, and question flow. Also records real per-question
-// results (session.js) and saves the finished session (store.js) so
-// report.html can show actual data instead of placeholders.
+// Wires the Start/Stop button, Next Question button, and category picker to
+// the camera, speech recognition, and question flow. Also records real
+// per-question results (session.js) and saves the finished session
+// (store.js) so report.html can show actual data instead of placeholders.
 
 let sessionActive = false;
+let selectedCategory = "mixed";
 
 const startStopBtn = document.getElementById("start-stop-btn");
 const nextQuestionBtn = document.getElementById("next-question-btn");
 const statusText = document.getElementById("status-text");
 const restartBtn = document.getElementById("restart-btn");
+const categoryPicker = document.getElementById("category-picker");
+const categoryButtons = document.querySelectorAll(".category-btn");
+
+categoryButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    if (sessionActive) return; // can't switch mid-interview
+
+    selectedCategory = btn.dataset.category;
+    categoryButtons.forEach((b) => b.classList.remove("category-btn--active"));
+    btn.classList.add("category-btn--active");
+  });
+});
 
 startStopBtn.addEventListener("click", async () => {
   if (!sessionActive) {
@@ -23,9 +36,10 @@ startStopBtn.addEventListener("click", async () => {
       }
 
       resetSessionLog();
-      startInterviewQuestions();
+      startInterviewQuestions(selectedCategory);
 
       sessionActive = true;
+      categoryPicker.classList.add("force-hidden");
       startStopBtn.textContent = "Stop interview";
       nextQuestionBtn.hidden = false;
       statusText.textContent = "Session in progress.";
@@ -38,6 +52,7 @@ startStopBtn.addEventListener("click", async () => {
     resetInterviewQuestions();
 
     sessionActive = false;
+    categoryPicker.classList.remove("force-hidden");
     startStopBtn.textContent = "Start interview";
     nextQuestionBtn.hidden = true;
     statusText.textContent = "Session ended.";
@@ -86,6 +101,7 @@ function hideCompletionScreen() {
   document.querySelector(".session__grid").classList.remove("force-hidden");
   document.querySelector(".controls").classList.remove("force-hidden");
   document.getElementById("completion-screen").hidden = true;
+  categoryPicker.classList.remove("force-hidden");
 }
 
 restartBtn.addEventListener("click", () => {
