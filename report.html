@@ -18,99 +18,36 @@
     </div>
   </nav>
 
-  <main class="report">
-    <p class="report__eyebrow">SESSION REPORT — 5 QUESTIONS</p>
+  <!-- Shown only if there's no saved session yet -->
+  <main class="report" id="empty-state" hidden>
+    <p class="report__eyebrow">NO SESSION YET</p>
+    <h1 class="report__title">You haven't finished an interview yet.</h1>
+    <p style="color: var(--ink-soft); margin-bottom: 32px;">
+      Complete a full interview on the coach screen and your report will show up here.
+    </p>
+    <a href="coach.html" class="btn btn--primary">Start an interview</a>
+  </main>
+
+  <!-- Shown once a saved session exists -->
+  <main class="report" id="report-content" hidden>
+    <p class="report__eyebrow" id="report-eyebrow">SESSION REPORT</p>
     <h1 class="report__title">Here's how it went.</h1>
 
-    <!-- NOTE: placeholder numbers for now. Once scoring.js/store.js are built,
-         these will read from the real session data instead of hardcoded values. -->
-    <section class="score-band">
-      <div class="score-stat">
-        <p class="score-stat__label">POSTURE</p>
-        <p class="score-stat__value score-stat__value--mark">92</p>
-        <p class="score-stat__note">Mostly level shoulders, minor drift on Q3</p>
-      </div>
-      <div class="score-stat">
-        <p class="score-stat__label">PACE</p>
-        <p class="score-stat__value">146 wpm</p>
-        <p class="score-stat__note">A little fast on longer answers</p>
-      </div>
-      <div class="score-stat">
-        <p class="score-stat__label">FILLER WORDS</p>
-        <p class="score-stat__value score-stat__value--pen">11</p>
-        <p class="score-stat__note">Mostly "um" and "like", clustered in Q2</p>
-      </div>
+    <section class="score-band" id="score-band">
+      <!-- filled by report.js -->
     </section>
 
     <section class="breakdown">
       <h2 class="breakdown__title">Question by question</h2>
-
-      <div class="question-report">
-        <div class="question-report__meta">
-          <span>Q1 · Behavioral</span>
-          <span>0:52</span>
-        </div>
-        <p class="question-report__prompt">Tell me about a time you led a team through a setback.</p>
-        <p class="question-report__transcript">
-          "So basically we were three weeks behind on the launch, so I split the
-          remaining work into two-day sprints so we could catch problems early.
-          We shipped four days late instead of two weeks."
-        </p>
-        <div class="question-report__stats">
-          <span>Posture: <strong>0° (level)</strong></span>
-          <span>Pace: <strong>138 wpm</strong></span>
-          <span>Fillers: <strong>2</strong></span>
-        </div>
-      </div>
-
-      <div class="question-report">
-        <div class="question-report__meta">
-          <span>Q2 · Behavioral</span>
-          <span>1:04</span>
-        </div>
-        <p class="question-report__prompt">Describe a situation where you disagreed with a decision at work. What did you do?</p>
-        <p class="question-report__transcript">
-          "Um, so, like, there was this one time where, um, my manager wanted to
-          ship without testing and I said we should wait."
-        </p>
-        <div class="question-report__stats">
-          <span>Posture: <strong>+6°</strong></span>
-          <span>Pace: <strong>159 wpm</strong></span>
-          <span>Fillers: <strong>6</strong></span>
-        </div>
-      </div>
-
-      <div class="question-report">
-        <div class="question-report__meta">
-          <span>Q3 · Technical</span>
-          <span>0:47</span>
-        </div>
-        <p class="question-report__prompt">Walk me through how you'd approach debugging a system you've never seen before.</p>
-        <p class="question-report__transcript">
-          "I'd start by reproducing the issue, then check logs, then narrow down
-          which component is failing before making any changes."
-        </p>
-        <div class="question-report__stats">
-          <span>Posture: <strong>-4°</strong></span>
-          <span>Pace: <strong>142 wpm</strong></span>
-          <span>Fillers: <strong>1</strong></span>
-        </div>
+      <div id="breakdown-list">
+        <!-- filled by report.js -->
       </div>
     </section>
 
     <section class="tips">
       <h2 class="tips__title">What to work on</h2>
-      <div class="tips__item">
-        <span class="tips__marker">→</span>
-        <p class="tips__text">Filler words spiked on Q2 — try pausing silently instead of saying "um" while you think.</p>
-      </div>
-      <div class="tips__item">
-        <span class="tips__marker">→</span>
-        <p class="tips__text">Your pace crept above 150 wpm on longer answers. Slowing down slightly will make key points easier to follow.</p>
-      </div>
-      <div class="tips__item">
-        <span class="tips__marker">→</span>
-        <p class="tips__text">Posture held steady across most questions — keep that up, especially on Q2 where it drifted a bit.</p>
+      <div id="tips-list">
+        <!-- filled by report.js -->
       </div>
     </section>
 
@@ -120,5 +57,7 @@
     </div>
   </main>
 
+  <script src="js/store.js"></script>
+  <script src="js/report.js"></script>
 </body>
 </html>
