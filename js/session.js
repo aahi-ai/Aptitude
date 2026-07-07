@@ -5,7 +5,7 @@ function resetSessionLog() {
 }
 
 function recordQuestionResult(questionIndex) {
-  const question = questionBank[questionIndex];
+  const question = activeQuestions[questionIndex];
   const metrics = getFinalMetricsForQuestion(questionIndex);
 
   const samples = postureSamples
