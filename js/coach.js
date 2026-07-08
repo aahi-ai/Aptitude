@@ -1,9 +1,3 @@
-// coach.js — main session controller
-// Wires the Start/Stop button, Next Question button, and category picker to
-// the camera, speech recognition, and question flow. Also records real
-// per-question results (session.js) and saves the finished session
-// (store.js) so report.html can show actual data instead of placeholders.
-
 let sessionActive = false;
 let selectedCategory = "mixed";
 
@@ -16,8 +10,7 @@ const categoryButtons = document.querySelectorAll(".category-btn");
 
 categoryButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (sessionActive) return; // can't switch mid-interview
-
+    if (sessionActive) return;
     selectedCategory = btn.dataset.category;
     categoryButtons.forEach((b) => b.classList.remove("category-btn--active"));
     btn.classList.add("category-btn--active");
@@ -59,10 +52,18 @@ startStopBtn.addEventListener("click", async () => {
   }
 });
 
-nextQuestionBtn.addEventListener("click", () => {
-  // Capture the question that's ending BEFORE advancing the index.
+nextQuestionBtn.addEventListener("click", async () => {
   const finishedIndex = currentQuestionIndex;
   recordQuestionResult(finishedIndex);
+
+  nextQuestionBtn.disabled = true;
+  statusText.textContent = "Scoring your answer...";
+
+  const finishedEntry = sessionLog.find((q) => q.questionIndex === finishedIndex);
+  const result = await scoreAnswer(finishedEntry.prompt, finishedEntry.transcript);
+  attachContentScore(finishedIndex, result.score, result.feedback);
+
+  nextQuestionBtn.disabled = false;
 
   const hasMoreQuestions = goToNextQuestion();
 
@@ -75,15 +76,11 @@ nextQuestionBtn.addEventListener("click", () => {
     saveSession(sessionLog, aggregates);
 
     showCompletionScreen();
+  } else {
+    statusText.textContent = "Session in progress.";
   }
 });
 
-/**
- * Hides the active session UI and shows the "session complete" screen.
- * Uses the .force-hidden class (not the hidden attribute) because
- * .session__grid/.session__meta/.controls all set an explicit display
- * property, which overrides the browser's default [hidden] styling.
- */
 function showCompletionScreen() {
   document.querySelector(".session__meta").classList.add("force-hidden");
   document.getElementById("question-text").classList.add("force-hidden");
@@ -92,9 +89,6 @@ function showCompletionScreen() {
   document.getElementById("completion-screen").hidden = false;
 }
 
-/**
- * Reverses showCompletionScreen() and resets the question flow and transcript.
- */
 function hideCompletionScreen() {
   document.querySelector(".session__meta").classList.remove("force-hidden");
   document.getElementById("question-text").classList.remove("force-hidden");
