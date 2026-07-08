@@ -24,21 +24,33 @@ function recordQuestionResult(questionIndex) {
     transcript: metrics.transcript,
     wpm: metrics.wpm,
     fillerCount: metrics.fillerCount,
-    avgPosture
+    avgPosture,
+    contentScore: null,
+    contentFeedback: null
   });
+}
+
+function attachContentScore(questionIndex, score, feedback) {
+  const entry = sessionLog.find((q) => q.questionIndex === questionIndex);
+  if (entry) {
+    entry.contentScore = score;
+    entry.contentFeedback = feedback;
+  }
 }
 
 function computeSessionAggregates() {
   const wpmValues = sessionLog.map((q) => q.wpm).filter((v) => v !== null);
   const postureValues = sessionLog.map((q) => q.avgPosture).filter((v) => v !== null);
+  const contentScores = sessionLog.map((q) => q.contentScore).filter((v) => v !== null);
   const totalFillers = sessionLog.reduce((sum, q) => sum + q.fillerCount, 0);
 
   const avg = (arr) =>
-    arr.length > 0 ? Math.round(arr.reduce((sum, v) => sum + v, 0) / arr.length) : null;
+    arr.length > 0 ? Math.round((arr.reduce((sum, v) => sum + v, 0) / arr.length) * 10) / 10 : null;
 
   return {
     avgWpm: avg(wpmValues),
     avgPosture: avg(postureValues),
+    avgContentScore: avg(contentScores),
     totalFillers
   };
 }
