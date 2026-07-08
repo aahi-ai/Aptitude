@@ -67,6 +67,11 @@ nextQuestionBtn.addEventListener("click", async () => {
 
   const hasMoreQuestions = goToNextQuestion();
 
+  if (hasMoreQuestions) {
+  resetPauseStateForNewQuestion();
+  }
+
+
   if (!hasMoreQuestions) {
     stopCamera();
     stopListening();

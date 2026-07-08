@@ -5,13 +5,13 @@ let poseDetector = null;
 let poseLoopRunning = false;
 let postureSamples = []; // { questionIndex, angle } — used later for per-question averages
 
+// Set to true if you want the red/green skeleton lines visible again.
+// Posture math keeps running either way — this only controls the drawing.
+const SHOW_POSE_OVERLAY = false;
+
 const videoEl = () => document.getElementById("camera-feed");
 const canvasEl = () => document.getElementById("pose-canvas");
 
-/**
- * Requests camera access and starts streaming into the <video> element.
- * Returns true if it succeeded, false if it failed (permission denied, no camera, etc).
- */
 async function startCamera() {
   const video = videoEl();
   const placeholderEl = document.getElementById("video-placeholder");
@@ -21,10 +21,12 @@ async function startCamera() {
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: "user" },
-      audio: false // audio is handled separately in voice.js
+      audio: true // used only for pause/hesitation detection in audio.js —
+                  // speech-to-text (voice.js) uses the browser's own mic access separately
     });
 
     postureSamples = [];
+    startAudioAnalysis(cameraStream);
 
     video.srcObject = cameraStream;
     video.hidden = false;
@@ -33,7 +35,6 @@ async function startCamera() {
     dotEl.classList.add("video-panel__badge-dot--live");
     labelEl.textContent = "camera on";
 
-    // Wait until the video actually has dimensions before starting pose detection
     await new Promise((resolve) => {
       video.onloadeddata = resolve;
     });
@@ -51,9 +52,6 @@ async function startCamera() {
   }
 }
 
-/**
- * Stops the camera stream, the pose loop, and resets the video panel.
- */
 function stopCamera() {
   const video = videoEl();
   const canvas = canvasEl();
@@ -63,6 +61,7 @@ function stopCamera() {
   const postureValueEl = document.getElementById("posture-value");
 
   poseLoopRunning = false;
+  stopAudioAnalysis();
 
   if (cameraStream) {
     cameraStream.getTracks().forEach((track) => track.stop());
@@ -81,11 +80,8 @@ function stopCamera() {
   postureValueEl.textContent = "—";
 }
 
-/**
- * Creates the MediaPipe Pose instance (only once) and configures its accuracy/speed tradeoff.
- */
 function setupPoseDetector() {
-  if (poseDetector) return; // already set up, reuse it
+  if (poseDetector) return;
 
   poseDetector = new Pose({
     locateFile: (file) =>
@@ -102,10 +98,6 @@ function setupPoseDetector() {
   poseDetector.onResults(onPoseResults);
 }
 
-/**
- * Feeds video frames to the pose detector in a loop, roughly matching the browser's
- * repaint rate. Runs until poseLoopRunning is set to false (on stop).
- */
 function startPoseLoop() {
   const video = videoEl();
   const canvas = canvasEl();
@@ -125,10 +117,6 @@ function startPoseLoop() {
   loop();
 }
 
-/**
- * Called every time MediaPipe finishes analyzing a frame.
- * Draws the skeleton overlay and computes a basic posture reading.
- */
 function onPoseResults(results) {
   const canvas = canvasEl();
   const ctx = canvas.getContext("2d");
@@ -137,14 +125,16 @@ function onPoseResults(results) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (results.poseLandmarks) {
-    drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, {
-      color: "#B23B2E",
-      lineWidth: 2
-    });
-    drawLandmarks(ctx, results.poseLandmarks, {
-      color: "#2F6F4E",
-      radius: 2
-    });
+    if (SHOW_POSE_OVERLAY) {
+      drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, {
+        color: "#B23B2E",
+        lineWidth: 2
+      });
+      drawLandmarks(ctx, results.poseLandmarks, {
+        color: "#2F6F4E",
+        radius: 2
+      });
+    }
 
     updatePostureReading(results.poseLandmarks);
   }
@@ -152,15 +142,9 @@ function onPoseResults(results) {
   ctx.restore();
 }
 
-/**
- * Turns raw landmark coordinates into a simple, readable posture metric:
- * the tilt angle of the shoulder line. A level line (~0°) means good alignment;
- * a larger angle means the shoulders are tilted.
- */
 function updatePostureReading(landmarks) {
   const postureValueEl = document.getElementById("posture-value");
 
-  // MediaPipe Pose landmark indices: 11 = left shoulder, 12 = right shoulder
   const leftShoulder = landmarks[11];
   const rightShoulder = landmarks[12];
 
@@ -174,9 +158,6 @@ function updatePostureReading(landmarks) {
   const angleRadians = Math.atan2(dy, dx);
   let angleDegrees = angleRadians * (180 / Math.PI);
 
-  // The raw angle can land near ±180° even when shoulders are level, depending on
-  // which direction the left->right vector points. Fold it into a -90°..90° range
-  // so "level" always reads close to 0°, and the sign tells you which way it's tilted.
   if (angleDegrees > 90) {
     angleDegrees -= 180;
   } else if (angleDegrees < -90) {
