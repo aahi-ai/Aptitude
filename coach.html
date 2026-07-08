@@ -22,15 +22,16 @@
 
   <main class="session">
     <div class="category-picker" id="category-picker">
-  <p class="category-picker__label">CHOOSE QUESTION TYPE</p>
-  <div class="category-picker__options">
-    <button class="category-btn category-btn--active" data-category="mixed">Mixed</button>
-    <button class="category-btn" data-category="behavioral">Behavioral</button>
-    <button class="category-btn" data-category="technical">Technical</button>
-    <button class="category-btn" data-category="problemSolving">Problem Solving</button>
-    <button class="category-btn" data-category="traits">Trait / Situational</button>
-  </div>
-</div>
+      <p class="category-picker__label">CHOOSE QUESTION TYPE</p>
+      <div class="category-picker__options">
+        <button class="category-btn category-btn--active" data-category="mixed">Mixed</button>
+        <button class="category-btn" data-category="behavioral">Behavioral</button>
+        <button class="category-btn" data-category="technical">Technical</button>
+        <button class="category-btn" data-category="problemSolving">Problem Solving</button>
+        <button class="category-btn" data-category="traits">Trait / Situational</button>
+      </div>
+    </div>
+
     <div class="session__meta">
       <span id="question-counter">Question 1 of 5</span>
       <span id="question-type">Behavioral</span>
@@ -72,6 +73,10 @@
             <p class="readout__label">FILLERS</p>
             <p class="readout__value" id="filler-value">—</p>
           </div>
+          <div class="readout">
+            <p class="readout__label">PAUSES</p>
+            <p class="readout__value" id="pause-value">—</p>
+          </div>
         </div>
       </div>
     </div>
@@ -97,6 +102,7 @@
   </main>
 
   <script src="js/vision.js"></script>
+  <script src="js/audio.js"></script>
   <script src="js/prosody.js"></script>
   <script src="js/voice.js"></script>
   <script src="js/interview.js"></script>
