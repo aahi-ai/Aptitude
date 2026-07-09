@@ -1,5 +1,5 @@
 // api/score.js — Vercel serverless function.
-// Runs on Vercel's servers, not the browser, so the OpenRouter API key stays
+// Runs on Vercel's servers, not the browser, so the Hack Club AI API key stays
 // hidden here instead of being exposed in frontend JS.
 
 export default async function handler(req, res) {
@@ -9,6 +9,7 @@ export default async function handler(req, res) {
 
   const { question, transcript } = req.body || {};
 
+  // No point calling the AI if there's nothing to score.
   if (!transcript || transcript.trim().length === 0) {
     return res.status(200).json({
       score: null,
@@ -26,21 +27,21 @@ Respond with ONLY valid JSON, no other text, no markdown formatting, in exactly 
 {"score": <number 1-10>, "feedback": "<one specific, actionable sentence of feedback>"}`;
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("https://ai.hackclub.com/proxy/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`
+        "Authorization": `Bearer ${process.env.HACKCLUB_API_KEY}`
       },
       body: JSON.stringify({
-        model: "google/gemma-2-27b-it:free",
+        model: "qwen/qwen3-32b",
         messages: [{ role: "user", content: prompt }]
       })
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("OpenRouter error:", response.status, errText);
+      console.error("Hack Club AI error:", response.status, errText);
       return res.status(200).json({
         score: null,
         feedback: "Scoring is temporarily unavailable (the AI service returned an error)."
