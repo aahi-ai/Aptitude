@@ -1,7 +1,3 @@
-// report.js — loads the saved session (store.js) and renders real
-// posture/pace/filler data into report.html, generating simple rule-based
-// tips instead of static placeholder text.
-
 document.addEventListener("DOMContentLoaded", () => {
   const session = loadSession();
 
@@ -19,9 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTips(session.aggregates, session.questions);
 });
 
-/**
- * Fills in the three top-level stat cards (posture, pace, fillers).
- */
 function renderScoreBand(aggregates) {
   const band = document.getElementById("score-band");
   band.innerHTML = "";
@@ -50,8 +43,21 @@ function renderScoreBand(aggregates) {
     buildStatCard(
       "FILLER WORDS",
       aggregates.totalFillers,
-      aggregates.totalFillers === 0 ? "None detected — clean answers" : "Across the full session",
+      aggregates.totalFillers === 0
+        ? `None detected — ${aggregates.totalPauses} hesitation pause(s) picked up from audio though`
+        : `Plus ${aggregates.totalPauses} hesitation pause(s) detected from audio`,
       "pen"
+    )
+  );
+
+  band.appendChild(
+    buildStatCard(
+      "CONTENT",
+      aggregates.avgContentScore !== null ? `${aggregates.avgContentScore}/10` : "—",
+      aggregates.avgContentScore !== null
+        ? "Average AI score across all answers"
+        : "Scoring unavailable this session",
+      "mark"
     )
   );
 }
@@ -76,9 +82,6 @@ function buildStatCard(label, value, note, colorVariant) {
   return card;
 }
 
-/**
- * Builds one card per question showing its prompt, transcript, and stats.
- */
 function renderBreakdown(questions) {
   const list = document.getElementById("breakdown-list");
   list.innerHTML = "";
@@ -107,17 +110,23 @@ function renderBreakdown(questions) {
       <span>Posture: <strong>${q.avgPosture !== null ? formatAngle(q.avgPosture) : "—"}</strong></span>
       <span>Pace: <strong>${q.wpm !== null ? q.wpm + " wpm" : "—"}</strong></span>
       <span>Fillers: <strong>${q.fillerCount}</strong></span>
+      <span>Pauses: <strong>${q.pauseCount}</strong></span>
+      <span>Content: <strong>${q.contentScore !== null ? q.contentScore + "/10" : "—"}</strong></span>
     `;
 
     card.append(meta, prompt, transcript, stats);
+
+    if (q.contentFeedback) {
+      const feedback = document.createElement("p");
+      feedback.className = "question-report__feedback";
+      feedback.textContent = q.contentFeedback;
+      card.appendChild(feedback);
+    }
+
     list.appendChild(card);
   });
 }
 
-/**
- * Generates a handful of rule-based tips from the aggregate and per-question
- * data. Not AI-generated — just simple thresholds on real computed numbers.
- */
 function renderTips(aggregates, questions) {
   const list = document.getElementById("tips-list");
   list.innerHTML = "";
