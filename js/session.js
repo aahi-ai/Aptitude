@@ -17,6 +17,8 @@ function recordQuestionResult(questionIndex) {
       ? Math.round(samples.reduce((sum, a) => sum + a, 0) / samples.length)
       : null;
 
+  const pauseCount = pauseSamples.filter((p) => p.questionIndex === questionIndex).length;
+
   sessionLog.push({
     questionIndex,
     type: question.type,
@@ -24,6 +26,7 @@ function recordQuestionResult(questionIndex) {
     transcript: metrics.transcript,
     wpm: metrics.wpm,
     fillerCount: metrics.fillerCount,
+    pauseCount,
     avgPosture,
     contentScore: null,
     contentFeedback: null
@@ -43,6 +46,7 @@ function computeSessionAggregates() {
   const postureValues = sessionLog.map((q) => q.avgPosture).filter((v) => v !== null);
   const contentScores = sessionLog.map((q) => q.contentScore).filter((v) => v !== null);
   const totalFillers = sessionLog.reduce((sum, q) => sum + q.fillerCount, 0);
+  const totalPauses = sessionLog.reduce((sum, q) => sum + q.pauseCount, 0);
 
   const avg = (arr) =>
     arr.length > 0 ? Math.round((arr.reduce((sum, v) => sum + v, 0) / arr.length) * 10) / 10 : null;
@@ -51,6 +55,7 @@ function computeSessionAggregates() {
     avgWpm: avg(wpmValues),
     avgPosture: avg(postureValues),
     avgContentScore: avg(contentScores),
-    totalFillers
+    totalFillers,
+    totalPauses
   };
 }
